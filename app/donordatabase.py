@@ -39,3 +39,15 @@ def requestDonorListFromDatabase(branch_name):
     donor_list = [donor[0] for donor in donor_list]
     
     return donor_list
+
+def takeDonorEmailList(donor_name_list):
+    connection = conn()
+    cursor = connection.cursor()
+    donor_email_list = []
+    for donor_name in donor_name_list:
+        cursor.execute("SELECT email FROM Donors WHERE donor_name = ?",(donor_name,))
+        donor_email = cursor.fetchone()
+        donor_email = donor_email[0]
+        donor_email_list.append(donor_email)
+    
+    return donor_email_list
