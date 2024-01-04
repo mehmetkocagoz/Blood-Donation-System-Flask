@@ -38,7 +38,7 @@ def login():
 # Works on localhost!
 # Works on azure deployment!
 # Works with API GATEWAY
-@app.route("/request",methods = ['POST','GET'])
+@app.route("/request",methods = ['POST'])
 def requestblood():
     if request.method == 'POST':
         try:
@@ -62,21 +62,12 @@ def requestblood():
             error_message = str(e)
             response_data = {"status": "error", "message": error_message}
             return jsonify(response_data), 400
-    else:
-        # GET REQUEST
-        # We will return donor_name list
-        form_data = request.json
-        print(form_data)
-        branch_name = form_data.get('branch_name')
-        print(branch_name)
-        donor_list = requestDonorListFromDatabase(branch_name)
-        response_data = {"status":"TRUE","donor_list":donor_list}
-        return jsonify(response_data)
+    
 
 # Works on localhost!
 # Works on azure deployment!
 # Works with API GATEWAY
-@app.route("/add", methods = ['POST'])
+@app.route("/add", methods = ['POST','GET'])
 def addBlood():
     if request.method == 'POST':
         try:
@@ -95,6 +86,16 @@ def addBlood():
             error_message = str(e)
             response_data = {"status": "error", "message": error_message}
             return jsonify(response_data), 400
+    else:
+        # GET REQUEST
+        # We will return donor_name list
+        form_data = request.json
+        print(form_data)
+        branch_name = form_data.get('branch_name')
+        print(branch_name)
+        donor_list = requestDonorListFromDatabase(branch_name)
+        response_data = {"status":"TRUE","donor_list":donor_list}
+        return jsonify(response_data)
 
 
 # Works on localhost!
