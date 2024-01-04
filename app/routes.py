@@ -43,7 +43,7 @@ def requestblood():
     if request.method == 'POST':
         try:
             form_data = request.json
-
+            print(form_data)
             requestor = form_data.get('requestor')
             bloodType = form_data.get('bloodType')
             city = form_data.get('city')
