@@ -3,7 +3,8 @@ import os
 import pyodbc
 import json
 from app.queueservice import addMessagetoQueue
-from app.mailsender import sendEmailToRequestor
+from app.mailsender import sendEmailToRequestor,sendEmailToDonors
+from app.donordatabase import takeDonorEmailList
 
 load_dotenv()
 
@@ -50,6 +51,7 @@ def createDonorInDatabase(donor_name, blood_type, city, town, email, phone):
     return "Donor Created Succesfully"
 
 def requestBloodFromDatabase(requestor, blood_type, city, town, email, units, duration):
+    req = units
     connection = conn()
     cursor = connection.cursor()
     # First we will check BloodDonations table, if there is enough blood we will directly send email to requestor 'Blood Found Donor= {'donor_name'}'
@@ -114,7 +116,11 @@ def requestBloodFromDatabase(requestor, blood_type, city, town, email, units, du
     connection.commit()
     connection.close()
     message = """
-        Blood Found donors:
+        Requested Blood Found!
     """
     sendEmailToRequestor(email,message)
+    donor_email_list = takeDonorEmailList(donor_name_list)
+    donor_message = f"Your blood, {blood_type}, helped someone! Gifted Unit: {req}"
+
+    sendEmailToDonors(donor_email_list,donor_message)
     return donor_name_list
