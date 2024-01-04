@@ -2,6 +2,7 @@ from flask import request, jsonify
 from app import app
 from app.user_validation import checkUser
 from app.blooddatabase import addBloodToDatabase,createDonorInDatabase,requestBloodFromDatabase
+from app.donordatabase import requestDonorListFromDatabase
 
 # Works on localhost!
 # Works on azure deployment!
@@ -36,7 +37,8 @@ def login():
 
 # Works on localhost!
 # Works on azure deployment!
-@app.route("/request",methods = ['POST'])
+# Works with API GATEWAY
+@app.route("/request",methods = ['POST','GET'])
 def requestblood():
     if request.method == 'POST':
         try:
@@ -60,8 +62,20 @@ def requestblood():
             error_message = str(e)
             response_data = {"status": "error", "message": error_message}
             return jsonify(response_data), 400
+    else:
+        # GET REQUEST
+        # We will return donor_name list
+        form_data = request.json
+        print(form_data)
+        branch_name = form_data.get('branch_name')
+        print(branch_name)
+        donor_list = requestDonorListFromDatabase(branch_name)
+        response_data = {"status":"TRUE","donor_list":donor_list}
+        return jsonify(response_data)
 
-
+# Works on localhost!
+# Works on azure deployment!
+# Works with API GATEWAY
 @app.route("/add", methods = ['POST'])
 def addBlood():
     if request.method == 'POST':
@@ -82,6 +96,10 @@ def addBlood():
             response_data = {"status": "error", "message": error_message}
             return jsonify(response_data), 400
 
+
+# Works on localhost!
+# Works on azure deployment!
+# Works with API GATEWAY
 @app.route("/create",methods = ['POST'])
 def createDonor():
     if request.method == 'POST':
