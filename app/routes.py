@@ -89,11 +89,8 @@ def addBlood():
     else:
         # GET REQUEST
         # We will return donor_name list
-        form_data = request.json
-        print(form_data)
-        branch_name = form_data.get('branch_name')
-        print(branch_name)
-        donor_list = requestDonorListFromDatabase(branch_name)
+        form_data = request.args.get('branch_name')
+        donor_list = requestDonorListFromDatabase(form_data)
         response_data = {"status":"TRUE","donor_list":donor_list}
         return jsonify(response_data)
 
