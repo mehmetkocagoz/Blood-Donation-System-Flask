@@ -110,8 +110,9 @@ def createDonor():
             town = form_data.get('town')
             email = form_data.get('email')
             phone = form_data.get('phone')
+            cdn_url = form_data.get('cdn_url')
 
-            message = createDonorInDatabase(donor_name,blood_type,city,town,email,phone)
+            message = createDonorInDatabase(donor_name,blood_type,city,town,email,phone,cdn_url)
             response_data = {"status":"TRUE","message":message}
             return jsonify(response_data)
 

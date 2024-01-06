@@ -39,13 +39,13 @@ def addBloodToDatabase(donor_name,blood_type,unit):
     return "Blood Added Succesfully"
 
 
-def createDonorInDatabase(donor_name, blood_type, city, town, email, phone):
+def createDonorInDatabase(donor_name, blood_type, city, town, email, phone,cdn_url):
     connection = conn()
     cursor = connection.cursor()
     cursor.execute("""
-            INSERT INTO Donors (donor_name, blood_type, city, town, email, phone)
-            VALUES (?, ?, ?, ?, ?, ?)
-        """, (donor_name, blood_type, city, town, email, phone))
+            INSERT INTO Donors (donor_name, blood_type, city, town, email, phone, cdn_url)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, (donor_name, blood_type, city, town, email, phone,cdn_url,))
     connection.commit()
     connection.close()
     return "Donor Created Succesfully"
