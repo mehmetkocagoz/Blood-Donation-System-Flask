@@ -28,7 +28,7 @@ Blood Donation System is a web application built with Flask to manage blood dona
 - **Gateway:** Azure API Management
 - **Queue:** Azure Message Queue
 - **PhotoStorage:** Azure Blob Storage
-- **Scheduler:** Azure App Service
+- **Scheduler:** Azure App Service + Azure Function App
 
 ## Encountered Issues
 
@@ -42,4 +42,4 @@ Blood Donation System is a web application built with Flask to manage blood dona
 2. **Donor Service Deployed at:**
     `https://sebackend.azurewebsites.net/`
 3. **Scheduler Service Deployed at:**
-    ``
+    `https://bloodserviceschedule.azurewebsites.net/`
