@@ -56,15 +56,15 @@ def createDonorInDatabase(donor_name, blood_type, city, town, email, phone,cdn_u
     cursor = connection.cursor()
 
     # Create donor If not exists
-    # Check only with email and name
+    # Check only with email
     cursor.execute("""
-                    SELECT * FROM Donors WHERE email = ? AND donor_name = ?
-                   """,(email,donor_name,))
+                    SELECT * FROM Donors WHERE email = ?
+                   """,(email,))
     donor = cursor.fetchone()
     if donor:
         connection.commit()
         connection.close()
-        return "Donor Already Exists"
+        return "There is a Donor with same e-mail address!"
     else:
         cursor.execute("""
                 INSERT INTO Donors (donor_name, blood_type, city, town, email, phone, cdn_url)
