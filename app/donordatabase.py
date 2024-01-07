@@ -30,6 +30,8 @@ def requestDonorListFromDatabase(branch_name):
 
     cursor.execute("SELECT city FROM Users WHERE username = ?",(branch_name,))
 
+    # Since this request just allow logged users to call
+    # There is no need to check None 
     city = cursor.fetchone()
     # It returns tuple take first element
     city = city[0]
