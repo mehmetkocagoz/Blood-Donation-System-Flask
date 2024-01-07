@@ -26,11 +26,23 @@ def conn():
         sqlstate = ex.args[1]
         return f"Error connecting to the database. SQLState: {sqlstate}"
     
-def addBloodToDatabase(donor_name,blood_type,unit):
+def addBloodToDatabase(donor_name,unit):
     connection = conn()
     cursor = connection.cursor()
     
-    cursor.execute("INSERT INTO BloodDonations (donor_name, blood_type, units) VALUES (?, ?, ?)",
+    cursor.execute("SELECT blood_type FROM Donors WHERE donor_name = ?",(donor_name,))
+    blood_type = cursor.fetchone()
+    blood_type = blood_type[0]
+
+    cursor.execute("SELECT units FROM BloodDonations WHERE donor_name = ? AND blood_type = ?",(donor_name,blood_type,))
+    donation = cursor.fetchone()
+    
+    if donation:
+        donation = donation[0]
+        set_unit = donation + unit
+        cursor.execute("UPDATE BloodDonations SET units = ? WHERE donor_name = ?",(set_unit,donor_name,))
+    else:
+        cursor.execute("INSERT INTO BloodDonations (donor_name, blood_type, units) VALUES (?, ?, ?)",
                    (donor_name, blood_type, unit))
     
     connection.commit()
@@ -42,13 +54,25 @@ def addBloodToDatabase(donor_name,blood_type,unit):
 def createDonorInDatabase(donor_name, blood_type, city, town, email, phone,cdn_url):
     connection = conn()
     cursor = connection.cursor()
+
+    # Create donor If not exists
+    # Check only with email and name
     cursor.execute("""
-            INSERT INTO Donors (donor_name, blood_type, city, town, email, phone, cdn_url)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        """, (donor_name, blood_type, city, town, email, phone,cdn_url,))
-    connection.commit()
-    connection.close()
-    return "Donor Created Succesfully"
+                    SELECT * FROM Donors WHERE email = ? AND donor_name = ?
+                   """,(email,donor_name,))
+    donor = cursor.fetchone()
+    if donor:
+        connection.commit()
+        connection.close()
+        return "Donor Already Exists"
+    else:
+        cursor.execute("""
+                INSERT INTO Donors (donor_name, blood_type, city, town, email, phone, cdn_url)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            """, (donor_name, blood_type, city, town, email, phone,cdn_url,))
+        connection.commit()
+        connection.close()
+        return "Donor Created Succesfully"
 
 def requestBloodFromDatabase(requestor, blood_type, city, town, email, units, duration):
     req = units

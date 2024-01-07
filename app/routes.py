@@ -73,11 +73,10 @@ def addBlood():
         try:
             form_data = request.json
 
-            blood_type = form_data.get('bloodType')
             unit = int(form_data.get('unit'))
             donor_name = form_data.get('donorName')
 
-            messageFromDatabase = addBloodToDatabase(donor_name,blood_type,unit)
+            messageFromDatabase = addBloodToDatabase(donor_name,unit)
 
             response_data ={"status":"TRUE","Message":messageFromDatabase}
             return jsonify(response_data)
