@@ -43,3 +43,10 @@ Blood Donation System is a web application built with Flask to manage blood dona
     `https://sebackend.azurewebsites.net/`
 3. **Scheduler Service Deployed at:**
     `https://bloodserviceschedule.azurewebsites.net/`
+
+## Data Models
+
+![ER Diagram](ER-DIAGRAM.PNG)
+
+## Presentation
+
