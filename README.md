@@ -19,6 +19,7 @@ Blood Donation System is a web application built with Flask to manage blood dona
 ## Assumptions
 
 - Assuming when adding blood to bank, there is already a donor created in Donors table
+- Each Donor should have unique email address
 
 ## Deployment
 
