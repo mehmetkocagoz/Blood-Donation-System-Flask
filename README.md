@@ -48,6 +48,3 @@ Blood Donation System is a web application built with Flask to manage blood dona
 ## Data Models
 
 ![ER Diagram](ER-DIAGRAM.PNG)
-
-## Presentation
-
